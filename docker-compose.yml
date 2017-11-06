@@ -32,9 +32,9 @@ services:
       - back-tier
     restart: always
     deploy:
-      placement:
-        constraints:
-          - node.hostname == moby
+    #  placement:
+    #    constraints:
+    #      - node.hostname == moby
 
   node-exporter:
     image: prom/node-exporter
@@ -58,7 +58,7 @@ services:
       - back-tier
     restart: always
     deploy:
-      mode: global
+    #  mode: global
 
   alertmanager:
     image: prom/alertmanager
@@ -73,9 +73,9 @@ services:
       - '-config.file=/etc/alertmanager/config.yml'
       - '-storage.path=/alertmanager'
     deploy:
-      placement:
-        constraints:
-          - node.hostname == moby
+    #  placement:
+    #    constraints:
+    #      - node.hostname == moby
   cadvisor:
     image: google/cadvisor
     volumes:
@@ -89,7 +89,7 @@ services:
       - back-tier
     restart: always
     deploy:
-      mode: global
+    #  mode: global
 
   grafana:
     image: grafana/grafana
