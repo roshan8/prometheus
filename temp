@@ -1,0 +1,101 @@
+eigapacagent[14-15].in1.mailhostbox.com
+
+mcrouter -p 5000 --config='{ "pools": { "A": { "servers": [ "172.16.170.62:20029", "172.16.170.63:20030" ] } }, "route": { "type": "OperationSelectorRoute", "operation_policies": { "add": "AllSyncRoute|Pool|A", "delete": "AllSyncRoute|Pool|A", "get": "LatestRoute|Pool|A", "set": "AllSyncRoute|Pool|A" } } }'
+
+
+
+172.16.170.62:20029
+172.16.170.63:20030
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  "id": "/eigapac/supersite-staging/mcrouter",
+  "cmd": "mcrouter -p 5000 --config='{ \"pools\": { \"A\": { \"servers\": [ \"172.16.170.62:20029\", \"172.16.170.63:20030\" ] } }, \"route\": { \"type\": \"OperationSelectorRoute\", \"operation_policies\": { \"add\": \"AllSyncRoute|Pool|A\", \"delete\": \"AllSyncRoute|Pool|A\", \"get\": \"LatestRoute|Pool|A\", \"set\": \"AllSyncRoute|Pool|A\" } } }'",
+  "cpus": 2,
+  "mem": 2048,
+  "disk": 0,
+  "instances": 1,
+  "constraints": [
+    [
+      "env",
+      "CLUSTER",
+      "colossus"
+    ],
+    [
+      "group",
+      "CLUSTER",
+      "eigapac"
+    ],
+    [
+      "hostname",
+      "LIKE",
+      "eigapacagent1[4-5].in1.mailhostbox.com"
+    ],
+    [
+      "hostname",
+      "UNIQUE"
+    ]
+  ],
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "artifactory.webhostbox.net:9004/supersite/mcrouter",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 0,
+          "servicePort": 20031,
+          "protocol": "tcp",
+          "labels": {},
+          "name": null
+        }
+      ],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": true
+    }
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "portIndex": 0,
+      "protocol": "TCP"
+    }
+  ],
+  "labels": {
+    "HAPROXY_GROUP": "sprdedi_lb"
+  },
+  "args": [
+    "-m",
+    "4096"
+  ],
+  "env": {},
+  "uris": [
+    "file:///etc/orderbox.tar.gz"
+  ]
+}
